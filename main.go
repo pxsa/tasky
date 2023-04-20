@@ -82,6 +82,31 @@ func main() {
 					return CompleteTask(taskName)
 				},
 			},
+
+			// list pending tasks only
+			{
+				Name: "pending",
+				Aliases: []string{"p"},
+				Usage: "list pending tasks",
+				Action: func(ctx *cli.Context) error {
+					tasks, err :=  GetAllPending()
+					printTasks(tasks)
+					return err
+				},
+			},
+
+			// list all completed tasks
+			{
+				Name: "completed",
+				Aliases: []string{"c"},
+				Usage: "list all completed tasks",
+				Action: func(ctx *cli.Context) error {
+					tasks, err :=  GetAllCompleted()
+					printTasks(tasks)
+					return err
+				},
+			},
+
 		},
 	}
 

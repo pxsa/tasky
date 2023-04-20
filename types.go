@@ -28,36 +28,8 @@ func CreateTask(task *Task) error {
 }
 
 func GetAll() ([]*Task, error) {
-	var tasks []*Task
-
 	filter := bson.D{}
-	cur, err := collection.Find(ctx, filter)
-	if err != nil {
-		return tasks, err
-	}
-
-	for cur.Next(ctx) {
-		var task Task
-		err := cur.Decode(&task)
-		if err != nil {
-			return tasks, err
-		}
-
-		tasks = append(tasks, &task)
-	}
-
-	if err := cur.Err(); err != nil {
-		return tasks, err
-	}
-	
-	cur.Close(ctx)
-
-	if len(tasks) == 0 {
-		return tasks, mongo.ErrNoDocuments
-	}
-
-
-	return tasks, nil
+	return getAllByFilter(filter)
 }
 
 func printTasks(tasks []*Task) {
@@ -80,4 +52,51 @@ func CompleteTask(taskName string) error{
 
 	t := &Task{}
 	return collection.FindOneAndUpdate(ctx, filter, update).Decode(t)
+}
+
+// get all penidng tasks
+func GetAllPending() ([]*Task, error) {
+	filter := bson.D {
+		primitive.E{Key:"completed", Value: false},
+	}
+	return getAllByFilter(filter)
+}
+
+// Get all Tasks by filter
+func getAllByFilter(filter bson.D) ([]*Task, error) {
+	var tasks []*Task
+
+	cursor, err := collection.Find(ctx, filter)
+	if err != nil {
+		return tasks, err
+	}
+
+	for cursor.Next(ctx) {
+		var task Task
+		err = cursor.Decode(&task)
+		if err != nil {
+			return tasks, err
+		}
+		tasks = append(tasks, &task)
+	}
+	defer cursor.Close(ctx)
+
+	if err := cursor.Err(); err != nil {
+		return tasks, err
+	}
+	
+	if len(tasks) == 0 {
+		return tasks, mongo.ErrNoDocuments
+	}
+
+	return tasks, nil
+}
+
+// Get all completed tasks
+func GetAllCompleted() ([]*Task, error) {
+	filter := bson.D {
+		primitive.E{Key: "completed", Value: true},
+	}
+
+	return getAllByFilter(filter)
 }
