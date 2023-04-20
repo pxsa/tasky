@@ -36,3 +36,7 @@ filter := bson.D {
 ```go
 filter := bson.D{primitive.E{Key: "text", Value: text}}
 ```
+
+## Summary
+
+![Gif](https://github.com/pxsa/task-management/docs/trailer.gif)
