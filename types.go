@@ -100,3 +100,13 @@ func GetAllCompleted() ([]*Task, error) {
 
 	return getAllByFilter(filter)
 }
+
+// Delete a task
+func DeleteTask(task string) error {
+
+	filter := bson.D {
+		primitive.E{Key: "text", Value: task},
+	}
+	_, err := collection.DeleteOne(ctx, filter)
+	return err
+}

@@ -7,7 +7,9 @@
 - [X] step3: creating a task
 - [X] step4: show all tasks
 - [X] step5: complete a task
-- [ ] step6: displaying pending tasks only
+- [X] step6: displaying pending tasks only
+- [X] step7: displaying finished tasks only
+- [X] step8: deleting a task
 
 ## Third party packages
 
@@ -27,4 +29,10 @@ Just to be clear you only need to know how to use a good query statement and all
 filter := bson.D {
     primitive.E{Key: "completed", Value: true},
 }
+```
+
+## Deleting a task
+
+```go
+filter := bson.D{primitive.E{Key: "text", Value: text}}
 ```

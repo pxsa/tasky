@@ -107,6 +107,17 @@ func main() {
 				},
 			},
 
+			// deleting a task
+			{
+				Name: "delete",
+				Aliases: []string{"D"},
+				Usage: "delete a task",
+				Action: func(ctx *cli.Context) error {
+					taskName := ctx.Args().First()
+					return DeleteTask(taskName)
+				},
+			},
+
 		},
 	}
 
