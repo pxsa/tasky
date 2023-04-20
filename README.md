@@ -38,4 +38,4 @@ filter := bson.D{primitive.E{Key: "text", Value: text}}
 ```
 
 ## Output
-![trailer](./docs/trailer.gif)
+![trailer](./docs/output.gif)
