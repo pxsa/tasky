@@ -30,7 +30,7 @@ func CreateTask(task *Task) error {
 func GetAll() ([]*Task, error) {
 	var tasks []*Task
 
-	filter := bson.D{{}}
+	filter := bson.D{}
 	cur, err := collection.Find(ctx, filter)
 	if err != nil {
 		return tasks, err
@@ -68,4 +68,16 @@ func printTasks(tasks []*Task) {
 			color.Yellow.Printf("%d: %s\n", i+1, v.Text)
 		}
 	}
+}
+
+// complete a task
+func CompleteTask(taskName string) error{
+	filter := bson.D{primitive.E{Key: "text", Value: taskName}}
+
+	update := bson.D{primitive.E{Key: "$set", Value: bson.D{
+		primitive.E{Key: "completed", Value: true},
+	}}}
+
+	t := &Task{}
+	return collection.FindOneAndUpdate(ctx, filter, update).Decode(t)
 }

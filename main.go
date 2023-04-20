@@ -35,7 +35,7 @@ func main() {
 			// add a new task
 			{
 				Name:    "add",
-				Aliases: []string{"a"},
+				Aliases: []string{"-a"},
 				Usage:   "add a task to the list",
 				Action: func(c *cli.Context) error {
 					taskTitle := c.Args().First()
@@ -56,7 +56,7 @@ func main() {
 			// list all tasks
 			{
 				Name: "all",
-				Aliases: []string{"l"},
+				Aliases: []string{"-l"},
 				Usage: "list all tasks",
 				Action: func(c *cli.Context) error {
 					tasks, err := GetAll()
@@ -69,6 +69,17 @@ func main() {
 					}
 					printTasks(tasks)
 					return nil
+				},
+			},
+
+			// complete a task
+			{
+				Name: "done",
+				Aliases: []string{"-d"},
+				Usage: "complete a task",
+				Action: func(c *cli.Context) error {
+					taskName := c.Args().First()
+					return CompleteTask(taskName)
 				},
 			},
 		},
