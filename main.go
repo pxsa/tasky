@@ -8,6 +8,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/joho/godotenv"
 	"github.com/urfave/cli/v2"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -26,7 +27,6 @@ var (
 
 // a task manager system written in go and using mongoDb
 func main() {
-
 	app := &cli.App{
 		Name:     "tasker",
 		Usage:    "A simple CLI program to manage your tasks",
@@ -132,8 +132,16 @@ func main() {
 func init() {
 	// options.ClientOption used to set the connection string
 	// and other driver settings.
-	uri := "mongodb+srv://parsaa:EIBxIxMDdwjIeRC5@cluster0.2seix4j.mongodb.net/?retryWrites=true&w=majority"
+	if err := godotenv.Load(); err != nil {
+		log.Println("No .env file found")
+	}
+	uri := os.Getenv("MONGODB_URI")
+	if uri == "" {
+		log.Fatal("You must set your 'MONGODB_URI' environmental variable.")
+	}
 	// uri := "mongodb://localhost:27017/"
+
+	
 	clientOptions := options.Client().ApplyURI(uri)
 	client, err := mongo.Connect(ctx, clientOptions)
 	if err != nil {

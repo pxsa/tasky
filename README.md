@@ -16,6 +16,7 @@
 1. `go get go.mongodb.org/mongo-driver`
 2. `go get github.com/urfave/cli/v2`
 3. `go get gopkg.in/gookit/color.v1`
+4. `go get github.com/joho/godotenv`
 
 ## Complete a task
 
@@ -38,4 +39,5 @@ filter := bson.D{primitive.E{Key: "text", Value: text}}
 ```
 
 ## Output
+
 ![trailer](./docs/output.gif)
